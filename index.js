@@ -7,7 +7,7 @@ const getIP = require('external-ip')();
 // const createError = require("http-errors");
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-// var favicon = require('serve-favicon');
+
 const mongoose = require("mongoose");
 const app = express();
 const passport = require("passport");
@@ -87,7 +87,6 @@ app.use(function (err, req, res, next) {
 /*MIDDLEWARE START*/
 
 // Indicate the middleware that Express should use
-// app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(cookieParser())
 app.use(bodyParser.json());
