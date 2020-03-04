@@ -1,0 +1,71 @@
+// Location of the main express application 
+const app = require('../index');
+// Test
+const debug = require('debug')('test:server');
+
+const http = require('http');
+const config = require('../config.js');
+
+//Normalize a port into a number, string, or false
+function normalizePort(val) {
+  let port = parseInt(val, 10);
+
+  if (isNaN(port)) {
+    // Named pipe
+    return val;
+  }
+
+  if (port >= 0) {
+    // Port number
+    return port;
+  }
+
+  return false;
+}
+
+// Event listener for err.
+
+function onError(error) {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+
+  let bind = typeof port === 'string'
+    ? 'Pipe ' + port
+    : 'Port ' + port;
+
+  // For specific listen errs
+  switch (error.code) {
+    case 'EACCES':
+      console.error(bind + ' requires elevated privileges');
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(bind + ' is already in use');
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+}
+
+// Event listener for server
+function onListening() {
+  const addr = server.address();
+  const bind = typeof addr === 'string'
+    ? 'pipe ' + addr
+    : 'port ' + addr.port;
+  debug('Listening on ' + bind);
+}
+
+// Get port from env
+const port = normalizePort(process.env.PORT || config.expressPort);
+app.set('port', port);
+
+// Create HTTP server
+const server = http.createServer(app);
+
+// Listen on provided port
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
