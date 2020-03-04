@@ -1,9 +1,7 @@
 require('dotenv/config');
-const path = require('path')
 const express = require("express");
 const logger = require('morgan');
 const cors = require('cors');
-const getIP = require('external-ip')();
 // const createError = require("http-errors");
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
@@ -23,22 +21,11 @@ const adminRegistrationvalidation = require("./routes/API/adminRegVal");
 const premisesLoginvalidation = require("./routes/API/premisesLogVal");
 /*ROUTES END*/
 /*CORS START*/
-let publicIP; // IP address of the server running app
 
-getIP(function (err, ip) {
-  // Stores the IP address of server running app
-  if (err) {
-    console.log("Failed to retrieve IP address: " + err.message);
-    throw err;
-  }
-  console.log("VMSA running on " + ip + ":" + config.expressPort);
-  publicIP = ip;
-});
-getIP()
 //use cors to allow cross origin resource sharing
 app.use(
   cors({
-    origin: `${publicIP}` || 'http://localhost:3000',
+    origin: 'http://localhost:3000',
     credentials: true,
     enablePreflight: true
   })
