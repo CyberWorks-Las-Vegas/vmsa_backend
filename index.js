@@ -121,7 +121,7 @@ app.get('/', function (req, res, next) {
     "AppName": "VMSA",
     "Version": 1.0
   }
-  res.json(testObject);
+  res.send(JSON.stringify(testObject));
 });
 
 // Defines a single route for test Restful API
@@ -134,18 +134,6 @@ app.use("/API/premisesLogVal", premisesLoginvalidation);
 /*ROUTES END*/
 /*EXTRA OPTIONS START*/
 
-// serves static files from this folder
-// production mode
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, 'dist')));
-  app.get('*', (req, res) => {
-    res.sendfile(path.join(__dirname = 'dist/index.html'));
-  })
-  // development mode
-} else {
-  app.use(express.static(path.join(__dirname, 'src')))
-
-}
 
 
 // For any other routes, set the status to 404 and forward to error handler
