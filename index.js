@@ -1,4 +1,3 @@
-require('dotenv/config');
 const cors = require('cors');
 const path = require('path');
 const logger = require('morgan');
@@ -18,10 +17,10 @@ const app = express();
 // const bless = require('./routes/bless');
 
 // For validation routes
-const adminRegValPath = path.join(__dirname, 'app', 'routes', 'API', 'adminRegVal');
+const adminRegValPath = path.join(__dirname, 'routes', 'API', 'adminRegVal');
 const adminRegistrationvalidation = require(adminRegValPath);
 
-const premisesLogValPath = path.join(__dirname, 'app', 'routes', 'API', 'premisesLogVal');
+const premisesLogValPath = path.join(__dirname, 'routes', 'API', 'premisesLogVal');
 const premisesLoginvalidation = require(premisesLogValPath);
 /*ROUTES END*/
 /*CORS START*/
