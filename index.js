@@ -28,7 +28,7 @@ const premisesLoginvalidation = require(premisesLogValPath);
 
 // Allow inbound traffic from origin URL
 const corsOptions = {
-  origin: 'https://zealous-wiles-7601ce.netlify.com',
+  origin: 'https://test.cyberworks.tech' || 'https://zealous-wiles-7601ce.netlify.com',
   credentials: true,
   enablePreflight: true,
   optionsSuccessStatus: 200
@@ -111,9 +111,9 @@ mongoose
 /*ROUTES START*/
 
 // headers for cors
-app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "https://vmsa-prod-backend.herokuapp.com");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+app.all(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
   next();
 });
 
