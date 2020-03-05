@@ -33,6 +33,22 @@ const corsOptions = {
   optionsSuccessStatus: 200
 }
 app.use(cors(corsOptions));
+
+// headers for cors
+app.all('*', function (req, res, next) {
+  const allowedOrigins = corsOptions.origin;
+  const origin = req.headers.origin;
+
+  if (allowedOrigins.indexOf(origin) > -1) {
+    console.log(origin)
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
+  res.header('Access-Control-Allow-Origin', 'https://test.cyberworks.tech');
+  res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
+  res.header("Access-Control-Allow-Headers", "Origin, Content-Type, Accept, X-Requested-With, Authorization");
+  res.header('Access-Control-Allow-Credentials', true);
+  return next();
+});
 /*CORS END*/
 /*ERROR HANDLING START*/
 
@@ -108,22 +124,6 @@ mongoose
   .catch(err => console.log(err));
 /*MIDDLEWARE END*/
 /*ROUTES START*/
-
-// headers for cors
-app.all('*', function (req, res, next) {
-  const allowedOrigins = corsOptions.origin;
-  const origin = req.headers.origin;
-
-  if (allowedOrigins.indexOf(origin) > -1) {
-    console.log(origin)
-    res.setHeader('Access-Control-Allow-Origin', origin);
-  }
-  res.header('Access-Control-Allow-Origin', 'https://test.cyberworks.tech');
-  res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
-  res.header("Access-Control-Allow-Headers", "Origin, Content-Type, Accept, X-Requested-With, Authorization");
-  res.header('Access-Control-Allow-Credentials', true);
-  return next();
-});
 
 // Test get route from server
 app.get('/', function (req, res, next) {
