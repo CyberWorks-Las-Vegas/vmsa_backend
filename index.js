@@ -111,11 +111,17 @@ mongoose
 
 // headers for cors
 app.all('*', function (req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*');
+  const allowedOrigins = corsOptions.origin;
+  const origin = req.headers.origin;
+
+  if (allowedOrigins.indexOf(origin) > -1) {
+    console.log(origin)
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
   res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  res.header('Access-Control-Allow-Credentials', 'true');
-  next();
+  res.header("Access-Control-Allow-Headers", "Origin, Content-Type, Accept, X-Requested-With, Authorization");
+  res.header('Access-Control-Allow-Credentials', true);
+  return next();
 });
 
 // Test get route from server
