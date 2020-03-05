@@ -6,7 +6,6 @@ const mongoose = require("mongoose");
 const passport = require("passport");
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-// const createError = require("http-errors");
 
 const app = express();
 
@@ -49,11 +48,6 @@ app.all('*', function (req, res, next) {
 });
 /*CORS END*/
 /*ERROR HANDLING START*/
-
-// use to create errs 
-// app.use(function (req, res, next) {
-//   next(createError(404));
-// });
 
 // error handler
 app.use(function (err, req, res, next) {

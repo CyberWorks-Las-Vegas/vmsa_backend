@@ -1,5 +1,5 @@
 {
-  "name": "vmsa_beta",
+  "name": "vmsa_prode_backend",
   "homepage": "http://vmsa.cyberworks.tech/",
   "version": "1.0.0",
   "description": "admin login web app",
@@ -12,7 +12,6 @@
     "test": "jest",
     "lint": "eslint ./src/**/*.js"
   },
-  "proxy": "http://localhost:8000",
   "jest": {
     "collectCoverage": true
   },
@@ -60,11 +59,10 @@
     "dotenv": "8.2.0",
     "express": "4.17.1",
     "external-ip": "2.1.1",
-    "http-errors": "1.7.3",
     "is-empty": "1.2.0",
     "jsonwebtoken": "8.5.1",
     "methods": "1.1.2",
-    "mongodb": "3.3.4-rc0",
+    "mongodb": "v3.3.4-rc0",
     "mongoose": "5.9.1",
     "morgan": "1.9.1",
     "net": "1.0.2",
