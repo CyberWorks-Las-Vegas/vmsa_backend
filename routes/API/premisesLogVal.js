@@ -68,7 +68,6 @@ router.post("/premisesLogin", async (req, res) => {
               useFindAndModify: false
             }
           );
-          res.send({ correct: true })
           // send refresh token as cookie to client
           sendRefreshToken(res, refreshToken)
           // send access token as a response from server
