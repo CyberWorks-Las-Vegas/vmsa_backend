@@ -110,6 +110,13 @@ mongoose
 /*MIDDLEWARE END*/
 /*ROUTES START*/
 
+// headers for cors
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "https://vmsa-prod-backend.herokuapp.com");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
 // Test get route from server
 app.get('/', function (req, res, next) {
   const testObject = {
