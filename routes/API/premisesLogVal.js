@@ -1,4 +1,6 @@
+require('dotenv/config');
 const express = require("express");
+const path = require('path');
 const router = express.Router();
 
 // load tokens from config
@@ -9,10 +11,12 @@ const {
   sendRefreshToken
 } = require("../../config/token")
 // Load input validation
-const validateLoginInput = require("../../validation/premisesLog/login");
+const validateLoginInputPath = path.join(__dirname, 'validation', 'premisesLog', 'login');
+const validateLoginInput = require(validateLoginInputPath);
 
 // Load Premises model
-const Premises = require("../../models/Premises");
+const premisesPath = path.join(__dirname, 'models', 'Premises');
+const Premises = require(premisesPath);
 
 // @route POST api/premisesLogVal/premisesLogin
 // @desc Login user and return JWT token
@@ -64,6 +68,7 @@ router.post("/premisesLogin", async (req, res) => {
               useFindAndModify: false
             }
           );
+          res.send({ correct: true })
           // send refresh token as cookie to client
           sendRefreshToken(res, refreshToken)
           // send access token as a response from server
