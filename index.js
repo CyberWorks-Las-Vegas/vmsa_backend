@@ -1,14 +1,15 @@
 require('dotenv/config');
-const express = require("express");
-const logger = require('morgan');
 const cors = require('cors');
-// const createError = require("http-errors");
+const path = require('path');
+const logger = require('morgan');
+const express = require("express");
+const mongoose = require("mongoose");
+const passport = require("passport");
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+// const createError = require("http-errors");
 
-const mongoose = require("mongoose");
 const app = express();
-const passport = require("passport");
 
 /*ROUTES START*/
 
@@ -17,19 +18,22 @@ const passport = require("passport");
 // const bless = require('./routes/bless');
 
 // For validation routes
-const adminRegistrationvalidation = require("./routes/API/adminRegVal");
-const premisesLoginvalidation = require("./routes/API/premisesLogVal");
+const adminRegValPath = path(__dirname, 'routes', 'API', 'adminRegVal');
+const adminRegistrationvalidation = require(adminRegValPath);
+
+const premisesLogValPath = path(__dirname, 'routes', 'API', 'premisesLogVal');
+const premisesLoginvalidation = require(premisesLogValPath);
 /*ROUTES END*/
 /*CORS START*/
 
-//use cors to allow cross origin resource sharing
-app.use(
-  cors({
-    origin: 'http://localhost:3000',
-    credentials: true,
-    enablePreflight: true
-  })
-);
+// Allow inbound traffic from origin URL
+const corsOptions = {
+  origin: 'https://zealous-wiles-7601ce.netlify.com',
+  credentials: true,
+  enablePreflight: true,
+  optionsSuccessStatus: 200
+}
+app.use(cors(corsOptions));
 /*CORS END*/
 /*ERROR HANDLING START*/
 
@@ -75,17 +79,22 @@ app.use(function (err, req, res, next) {
 
 // Indicate the middleware that Express should use
 app.use(logger('dev'));
-app.use(cookieParser())
+app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Passport middleware
 app.use(passport.initialize());
 // Passport config
-require("./config/passport")(passport);
+const passportPath = path.join(__dirname, 'config', 'passport');
+require(passportPath)(passport);
 
 // DB Config
-const db = require("./config/mongoCon.js").mongoURI;
+// DB var for non heroku use
+// const db = require("./config/mongoCon.js").mongoURI;
+
+// DB var for heroku use
+const db = process.env.MONGODB_URL;
 
 // test Connect to MongoDB
 mongoose
