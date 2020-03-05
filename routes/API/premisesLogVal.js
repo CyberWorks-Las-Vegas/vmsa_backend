@@ -15,7 +15,7 @@ const validateLoginInputPath = path.join(dirname, 'validation', 'premisesLog', '
 const validateLoginInput = require(validateLoginInputPath);
 
 // Load Premises model
-const premisesPath = path.join(__dirname, 'models', 'Premises');
+const premisesPath = path.join(dirname, 'models', 'Premises');
 const Premises = require(premisesPath);
 
 // @route POST api/premisesLogVal/premisesLogin
