@@ -47,7 +47,7 @@ app.all('*', function (req, res, next) {
   res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
   res.header("Access-Control-Allow-Headers", "Origin, Content-Type, Accept, X-Requested-With, Authorization");
   res.header('Access-Control-Allow-Credentials', true);
-  return next();
+  next();
 });
 /*CORS END*/
 /*ERROR HANDLING START*/
