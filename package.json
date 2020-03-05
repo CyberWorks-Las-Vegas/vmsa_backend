@@ -5,9 +5,7 @@
   "description": "admin login web app",
   "main": "index.js",
   "scripts": {
-    "express": "nodemon index.js",
-    "webpack": "babel-node ../vmsa_prod_frontend/node_modules/webpack-dev-server/bin/webpack-dev-server --open",
-    "dev": "concurrently \"npm run webpack\" \"npm run express\"",
+    "dev": "heroku local web",
     "start": "node index.js",
     "test": "jest",
     "lint": "eslint ./src/**/*.js"
