@@ -42,7 +42,6 @@ app.all('*', function (req, res, next) {
     console.log(origin)
     res.setHeader('Access-Control-Allow-Origin', origin);
   }
-  res.header('Access-Control-Allow-Origin', 'https://test.cyberworks.tech');
   res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
   res.header("Access-Control-Allow-Headers", "Origin, Content-Type, Accept, X-Requested-With, Authorization");
   res.header('Access-Control-Allow-Credentials', true);

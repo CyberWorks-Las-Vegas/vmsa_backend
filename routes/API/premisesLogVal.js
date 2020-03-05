@@ -61,7 +61,10 @@ router.post("/premisesLogin", async (req, res) => {
 
           // send refresh token to db
           await Premises.findOneAndUpdate(
-            { premises_id, admin_token: '' },
+            {
+              premises_id,
+              admin_token: ''
+            },
             { admin_token: `${refreshToken}` },
             {
               new: true,
