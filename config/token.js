@@ -25,9 +25,10 @@ const sendAccessToken = (req, res, accessToken, first_login) => {
   const origin = req.headers.origin;
 
   if (allowedOrigins.indexOf(origin) > -1) {
+    console.log(origin)
     res.setHeader('Access-Control-Allow-Origin', origin);
   }
-
+  res.header('Access-Control-Allow-Origin', 'https://test.cyberworks.tech');
   res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
   res.header("Access-Control-Allow-Headers", "Origin, Content-Type, Accept, X-Requested-With, Authorization");
   res.header('Access-Control-Allow-Credentials', true);
