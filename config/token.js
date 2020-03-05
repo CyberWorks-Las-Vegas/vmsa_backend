@@ -1,3 +1,4 @@
+require('dotenv/config');
 const { sign } = require('jsonwebtoken');
 
 const createAccessToken = userId => {
@@ -37,7 +38,6 @@ const sendAccessToken = (req, res, accessToken, first_login) => {
 const sendRefreshToken = (res, refreshToken) => {
   res.cookie('readmin_token', refreshToken, {
     httpOnly: true,
-    path: '/readmin_token'
   })
 };
 
