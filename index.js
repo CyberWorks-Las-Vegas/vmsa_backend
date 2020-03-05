@@ -18,10 +18,10 @@ const app = express();
 // const bless = require('./routes/bless');
 
 // For validation routes
-const adminRegValPath = path(__dirname, 'routes', 'API', 'adminRegVal');
+const adminRegValPath = path.join(__dirname, 'routes', 'API', 'adminRegVal');
 const adminRegistrationvalidation = require(adminRegValPath);
 
-const premisesLogValPath = path(__dirname, 'routes', 'API', 'premisesLogVal');
+const premisesLogValPath = path.join(__dirname, 'routes', 'API', 'premisesLogVal');
 const premisesLoginvalidation = require(premisesLogValPath);
 /*ROUTES END*/
 /*CORS START*/
@@ -113,7 +113,7 @@ mongoose
 app.all('*', function (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
-  res.header("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With").build();
+  res.header("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With");
   res.header('Access-Control-Allow-Credentials', 'true');
   next();
 });
