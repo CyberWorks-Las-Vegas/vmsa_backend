@@ -26,7 +26,7 @@ const premisesLoginvalidation = require(premisesLogValPath);
 
 // Allow inbound traffic from origin URL
 const corsOptions = {
-  origin: ['https://test.cyberworks.tech', 'https://zealous-wiles-7601ce.netlify.com'],
+  origin: ['https://vmsa.cyberworks.tech', 'https://test.cyberworks.tech', 'https://zealous-wiles-7601ce.netlify.com'],
   credentials: true,
   optionsSuccessStatus: 200
 }
