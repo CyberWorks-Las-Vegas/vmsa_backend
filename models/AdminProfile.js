@@ -7,6 +7,10 @@ const AdminProfileSchema = new Schema({
     type: String,
     required: true
   },
+  first_login: {
+    type: String,
+    required: true
+  },
   administrator: {
     first_Name: {
       type: String,
