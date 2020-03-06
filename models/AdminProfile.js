@@ -8,8 +8,8 @@ const AdminProfileSchema = new Schema({
     required: true
   },
   first_login: {
-    type: String,
-    required: true
+    type: Boolean,
+    required: false
   },
   administrator: {
     first_Name: {
