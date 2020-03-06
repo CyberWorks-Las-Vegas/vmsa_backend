@@ -7,10 +7,6 @@ const AdminProfileSchema = new Schema({
     type: String,
     required: true
   },
-  first_login: {
-    type: Boolean,
-    required: false
-  },
   administrator: {
     first_Name: {
       type: String,

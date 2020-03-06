@@ -1,15 +1,11 @@
 const express = require("express");
-const path = require('path');
 const router = express.Router();
 
 // Load input validation
-const dirname = '/app'
-const validateLoginInputPath = path.join(dirname, 'validation', 'adminReg', 'adminRegistration');
-const validateRegisterInput = require(validateLoginInputPath);
+const validateRegisterInput = require("../../validation/adminReg/adminRegistration");
 
 // Load AdminProfile model
-const validateLoginInputPath = path.join(dirname, 'models', 'AdminProfile');
-const AdminProfile = require(validateLoginInputPath);
+const AdminProfile = require("../../models/AdminProfile");
 
 // @route POST /api/adminRegVal/register
 // @desc Register user
@@ -52,15 +48,12 @@ router.post("/register", async (req, res) => {
             front_Desk_Password: ''
           };
 
-          const searchObj = Object.assign({ premises_id, first_login: true }, { administrator: oldUser })
+          const searchObj = Object.assign({ premises_id }, { administrator: oldUser })
 
           // send admin detail to db
           await AdminProfile.findOneAndUpdate(
             searchObj,
-            {
-              first_login: false,
-              administrator: newUser
-            },
+            { administrator: newUser },
             {
               new: true,
               useFindAndModify: false
@@ -69,7 +62,7 @@ router.post("/register", async (req, res) => {
           // check if admin info added to db and send res
           const newSearchObj = Object.assign({ premises_id }, { administrator: newUser })
           const found = await AdminProfile.findOne(newSearchObj)
-          // err
+
           if (found) {
             res.json({ correct: true })
           } else {
