@@ -42,7 +42,7 @@ const AdminProfileSchema = new Schema({
       type: String,
       required: true
     },
-    street_number: {
+    street_Number: {
       type: String,
       required: true
     },

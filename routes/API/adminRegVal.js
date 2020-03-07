@@ -44,7 +44,7 @@ router.post("/register", async (req, res) => {
           }
 
           const newSchool = {
-            school_name: req.body.school_name,
+            school_Name: req.body.school_Name,
             street: req.body.street,
             street_Number: req.body.street_Number,
             city: req.body.city,
