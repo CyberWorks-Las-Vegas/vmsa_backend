@@ -10,7 +10,7 @@ const {
   sendRefreshToken
 } = require("../../config/token")
 // Load input validation
-const dirname = '/app'
+const dirname = '../../'
 const validateLoginInputPath = path.join(dirname, 'validation', 'premisesLog', 'login');
 const validateLoginInput = require(validateLoginInputPath);
 

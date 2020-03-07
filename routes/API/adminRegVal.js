@@ -3,7 +3,7 @@ const path = require('path');
 const router = express.Router();
 
 // Load input validation
-const dirname = '/app'
+const dirname = '../../'
 const validateRegisterInputPath = path.join(dirname, 'validation', 'adminReg', 'adminRegistration');
 const validateRegisterInput = require(validateRegisterInputPath);
 
@@ -42,31 +42,31 @@ router.post("/register", async (req, res) => {
             admin_Password: req.body.admin_Password,
             front_Desk_Password: req.body.front_Desk_Password
           }
-            ;
 
-          const oldUser = {
-            first_Name: '',
-            last_Name: '',
-            email: '',
-            admin_Password: '',
-            front_Desk_Password: ''
-          };
-
-          const searchObj = Object.assign({ premises_id, first_login: true }, { administrator: oldUser })
+          const newSchool = {
+            school_name: req.body.school_name,
+            street: req.body.street,
+            street_Number: req.body.street_Number,
+            city: req.body.city,
+            state: req.body.state,
+            zip: req.body.zip,
+          }
 
           // send admin detail to db
-          await AdminProfile.findOneAndUpdate(
-            searchObj,
-            { first_login: false, administrator: newUser },
+          const found = await AdminProfile.findOneAndUpdate(
+            { premises_id },
+            {
+              first_login: false,
+              administrator: newUser,
+              school: newSchool
+            },
             {
               new: true,
               useFindAndModify: false
             }
           );
-          // check if admin info added to db and send res
-          const newSearchObj = Object.assign({ premises_id }, { administrator: newUser })
-          const found = await AdminProfile.findOne(newSearchObj)
 
+          // check if admin info added to db and send res
           if (found) {
             res.json({ correct: true })
           } else {
