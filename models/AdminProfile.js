@@ -33,6 +33,32 @@ const AdminProfileSchema = new Schema({
       required: true
     }
   },
+  school: {
+    school_Name: {
+      type: String,
+      required: true
+    },
+    street: {
+      type: String,
+      required: true
+    },
+    street_number: {
+      type: String,
+      required: true
+    },
+    city: {
+      type: String,
+      required: true
+    },
+    state: {
+      type: String,
+      required: true
+    },
+    zip: {
+      type: String,
+      required: true
+    }
+  },
   date: {
     type: Date,
     default: Date.now
