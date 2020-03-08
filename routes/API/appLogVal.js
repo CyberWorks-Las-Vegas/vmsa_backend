@@ -50,10 +50,10 @@ router.post("/appLogin", async (req, res) => {
         // destructure password from object in array
         let appPassword = `${profile}_password`
         const userPasswordArray = user.map(prop => prop[appPassword]);
-        const [appPassword] = userPasswordArray;
+        const [profilePassword] = userPasswordArray;
 
         // check passsword from db then create token if true
-        if (premises_id === id && appPassword === password) {
+        if (premises_id === id && profilePassword === password) {
           // create access/refresh tokens
           const accessToken = createAccessToken(premises_id);
           const refreshToken = createRefreshToken(premises_id);
