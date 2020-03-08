@@ -21,6 +21,9 @@ const adminRegistrationvalidation = require(adminRegValPath);
 
 const premisesLogValPath = path.join(__dirname, 'routes', 'API', 'premisesLogVal');
 const premisesLoginvalidation = require(premisesLogValPath);
+
+const appLogValPath = path.join(__dirname, 'routes', 'API', 'appLogVal');
+const appLoginvalidation = require(appLogValPath);
 /*ROUTES END*/
 /*CORS START*/
 
@@ -132,8 +135,9 @@ app.get('/', function (req, res, next) {
 //app.use('/bless', bless);
 
 // Validation routes
-app.use("/API/adminRegVal", adminRegistrationvalidation);
+app.use("/API/appLogVal", appLoginvalidation);
 app.use("/API/premisesLogVal", premisesLoginvalidation);
+app.use("/API/adminRegVal", adminRegistrationvalidation);
 
 /*ROUTES END*/
 /*EXTRA OPTIONS START*/

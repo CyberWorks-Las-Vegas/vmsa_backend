@@ -8,23 +8,23 @@ const {
   createRefreshToken,
   sendAccessToken,
   sendRefreshToken
-} = require("../../config/token")
+} = require("../../config/token");
 // Load input validation
 const dirname = '/app'
-const validateLoginInputPath = path.join(dirname, 'validation', 'premisesLog', 'login');
-const validateLoginInput = require(validateLoginInputPath);
+const validateAppLoginInputPath = path.join(dirname, 'validation', 'appLog', 'appLogin');
+const validateAppLoginInput = require(validateAppLoginInputPath);
 
 // Load Premises model
-const premisesPath = path.join(dirname, 'models', 'Premises');
-const Premises = require(premisesPath);
+const appLoginPath = path.join(dirname, 'models', 'appLogin');
+const appLogin = require(appLoginPath);
 
-// @route POST API/premisesLogVal/premisesLogin
+// @route POST API/appLogVal/appLogin
 // @desc Login user and return JWT token
-// @access Public
-router.post("/premisesLogin", async (req, res) => {
+// @access Private
+router.post("/appLogin", async (req, res) => {
 
   // Form validation
-  const { errors, isValid } = validateLoginInput(req.body);
+  const { errors, isValid } = validateAppLoginInput(req.body);
 
   // Check validation
   if (!isValid) {
@@ -33,39 +33,37 @@ router.post("/premisesLogin", async (req, res) => {
 
   // get id/password from request body
   const id = req.body.premises_id;
+  const profile = req.body.current_profile;
   const password = req.body.premises_password;
 
   try {
     // Find user by premises
-    await Premises.find({ premises_id: id })
+    await appLogin.find({ premises_id: id })
       .then(async user => {
         // Check if user exists and handle err
         const length = user.length;
         if (length === 0) { throw new Error('premises id doesnt exist') };
-        const userArr = user;
+
         // destructure Id from object in array
         const userIdArray = user.map(prop => prop.premises_id);
         const [premises_id] = userIdArray;
         // destructure password from object in array
-        const userPasswordArray = user.map(prop => prop.premises_password);
-        const [premises_password] = userPasswordArray;
-        // destructure first Use from object in array
-        const userFirstLoginArray = userArr.map(prop => prop.first_login);
-        const [first_login] = userFirstLoginArray;
+        let appPassword = `${profile}_password`
+        const userPasswordArray = user.map(prop => prop[appPassword]);
+        const [appPassword] = userPasswordArray;
 
         // check passsword from db then create token if true
-        if (premises_id === id && premises_password === password) {
+        if (premises_id === id && appPassword === password) {
           // create access/refresh tokens
           const accessToken = createAccessToken(premises_id);
           const refreshToken = createRefreshToken(premises_id);
-
+          const profileTokenName = `${profile}_token`
           // send refresh token to db
-          await Premises.findOneAndUpdate(
+          await appLogin.findOneAndUpdate(
             {
               premises_id,
-              administrator_token: ''
             },
-            { administrator_token: `${refreshToken}` },
+            { [`${profileTokenName}`]: `${refreshToken}` },
             {
               new: true,
               useFindAndModify: false
@@ -74,7 +72,7 @@ router.post("/premisesLogin", async (req, res) => {
           // send refresh token as cookie to client
           sendRefreshToken(res, refreshToken)
           // send access token as a response from server
-          sendAccessToken(req, res, accessToken, first_login)
+          sendAccessToken(req, res, accessToken)
         } else {
           res.json({
             message: 'Incorrect credentials',
