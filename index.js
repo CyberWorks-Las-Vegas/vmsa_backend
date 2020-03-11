@@ -29,7 +29,13 @@ const appLoginvalidation = require(appLogValPath);
 
 // Allow inbound traffic from origin URL
 const corsOptions = {
-  origin: ['https://vmsa.cyberworks.tech', 'https://test.cyberworks.tech', 'https://zealous-wiles-7601ce.netlify.com', 'http://localhost:3000'],
+  origin: [
+    'https://vmsa.cyberworks.tech',
+    'https://test.cyberworks.tech',
+    'https://zealous-wiles-7601ce.netlify.com',
+    'https://sleepy-jang-a10c26.netlify.com',
+    'http://localhost:3000'
+  ],
   credentials: true,
   optionsSuccessStatus: 200
 }
