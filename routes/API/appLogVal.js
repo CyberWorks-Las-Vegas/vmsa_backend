@@ -42,18 +42,42 @@ router.post("/appLogin", async (req, res) => {
       .then(async user => {
         // Check if user exists and handle err
         const length = user.length;
-        if (length === 0) { throw new Error('premises id doesnt exist') };
+        if (length === 0) {
+          throw new Error('premises id doesnt exist')
+        };
 
         // destructure Id from object in array
         const userIdArray = user.map(prop => prop.premises_id);
         const [premises_id] = userIdArray;
-        // destructure password from object in array
-        let appPassword = `${profile}_password`
-        const userPasswordArray = user.map(prop => prop[appPassword]);
-        const [profilePassword] = userPasswordArray;
+        if (profile !== 'visitor_station') {
+          // destructure password from object in array
+          let appPassword = `${profile}_password`
+          const userPasswordArray = user.map(prop => prop[appPassword]);
+          const [profilePassword] = userPasswordArray;
 
-        // check passsword from db then create token if true
-        if (premises_id === id && profilePassword === password) {
+          // check passsword from db then create token if true
+          if (premises_id === id && profilePassword === password) {
+            // create access/refresh tokens
+            const accessToken = createAccessToken(premises_id);
+            const refreshToken = createRefreshToken(premises_id);
+            const profileTokenName = `${profile}_token`
+            // send refresh token to db
+            await appLogin.findOneAndUpdate(
+              {
+                premises_id,
+              },
+              { [`${profileTokenName}`]: `${refreshToken}` },
+              {
+                new: true,
+                useFindAndModify: false
+              }
+            );
+            // send refresh token as cookie to client
+            sendRefreshToken(res, refreshToken)
+            // send access token as a response from server
+            sendAccessToken(req, res, accessToken)
+          }
+        } else if (premises_id === id && profile === 'visitor_station') {
           // create access/refresh tokens
           const accessToken = createAccessToken(premises_id);
           const refreshToken = createRefreshToken(premises_id);
