@@ -22,15 +22,16 @@ const appLogin = require(appLoginPath);
 // @desc Login user and return JWT token
 // @access Private
 router.post("/appLogin", async (req, res) => {
+  // check if for visitor station profile since it doesnt get validate put does get an acces token
+  if (req.body.current_profile !== 'visitor_station') {
+    // Form validation
+    const { errors, isValid } = validateAppLoginInput(req.body);
 
-  // Form validation
-  const { errors, isValid } = validateAppLoginInput(req.body);
-
-  // Check validation
-  if (!isValid) {
-    return res.status(401).json({ error: errors });
+    // Check validation
+    if (!isValid) {
+      return res.status(401).json({ error: errors });
+    }
   }
-
   // get id/password from request body
   const id = req.body.premises_id;
   const profile = req.body.current_profile;
