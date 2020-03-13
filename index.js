@@ -24,6 +24,9 @@ const premisesLoginvalidation = require(premisesLogValPath);
 
 const appLogValPath = path.join(__dirname, 'routes', 'API', 'appLogVal');
 const appLoginvalidation = require(appLogValPath);
+
+const logInsertValPath = path.join(__dirname, 'routes', 'API', 'logInsertVal');
+const logInsertvalidation = require(logInsertValPath);
 /*ROUTES END*/
 /*CORS START*/
 
@@ -142,6 +145,7 @@ app.get('/', function (req, res, next) {
 
 // Validation routes
 app.use("/API/appLogVal", appLoginvalidation);
+app.use("/API/logInsertVal", logInsertvalidation);
 app.use("/API/premisesLogVal", premisesLoginvalidation);
 app.use("/API/adminRegVal", adminRegistrationvalidation);
 
