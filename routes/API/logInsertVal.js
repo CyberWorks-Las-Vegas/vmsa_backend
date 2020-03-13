@@ -1,6 +1,17 @@
 const express = require("express");
 const path = require('path');
 const router = express.Router();
+const mongoose = require('mongoose');
+
+// make a connection
+mongoose.connect(process.env.MONGODB_URL);
+
+// get reference to database
+const db = mongoose.connection;
+
+db.on('error', console.error.bind(console, 'connection error:'));
+
+
 
 // Load input validation
 const dirname = '/app'
@@ -30,24 +41,24 @@ router.post("/logInsert", async (req, res) => {
   const check_in = req.body.check_in;
   const license_id = req.body.license_id;
   const total_time = req.body.total_time;
+  db.once('open', function () {
+    try {
+      // a document instance
+      let newLogEntry = new Logs({ first_name, last_name, check_in, license_id, total_time });
 
-  try {
-    // a document instance
-    let newLogEntry = new Logs({ first_name, last_name, check_in, license_id, total_time });
+      // save model to database
+      await newLogEntry.save(function (err) {
+        if (err) return console.error(err);
+      }).then(res => res.send({ correct: true }))
+        .catch(err => res.send({ err }))
 
-    // save model to database
-    newLogEntry.save(function (err) {
-      if (err) return console.error(err);
-      console.log("saved to collection.");
-    });
-
-  } catch (err) {
-    res.send({
-      error: `${err.message}`,
-      status: `${err.status}`
-    });
-  };
-
+    } catch (err) {
+      res.send({
+        error: `${err.message}`,
+        status: `${err.status}`
+      });
+    };
+  });
 });
 
 module.exports = router;
