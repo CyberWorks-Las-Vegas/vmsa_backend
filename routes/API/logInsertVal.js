@@ -25,7 +25,7 @@ const validateLogInsertPath = path.join(dirname, 'validation', 'logs', 'logsInse
 const validateLogInsert = require(validateLogInsertPath);
 
 // Load Premises model
-const premisesPath = path.join(dirname, 'models', 'Premises');
+const premisesPath = path.join(dirname, 'models', 'Logs');
 const Logs = require(premisesPath);
 
 // @route POST API/logInsertVal/logInsert
