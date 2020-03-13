@@ -4,7 +4,13 @@ const router = express.Router();
 const mongoose = require('mongoose');
 
 // make a connection
-mongoose.connect(process.env.MONGODB_URL);
+mongoose.connect(process.env.MONGODB_URL, {
+  useCreateIndex: true,
+  useNewUrlParser: true,
+  useFindAndModify: false,
+  useUnifiedTopology: true
+}).then(() => console.log("MongoDB successfully connected in route"))
+
 
 // get reference to database
 const db = mongoose.connection;
