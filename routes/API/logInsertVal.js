@@ -1,7 +1,6 @@
 const express = require("express");
 const path = require('path');
 const router = express.Router();
-const mongoose = require('mongoose');
 
 
 
@@ -13,8 +12,8 @@ const validateLogInsertPath = path.join(dirname, 'validation', 'logs', 'logsInse
 const validateLogInsert = require(validateLogInsertPath);
 
 // Load Premises model
-const premisesPath = path.join(dirname, 'models', 'Logs');
-const Logs = require(premisesPath);
+const logsPath = path.join(dirname, 'models', 'Logs');
+const Logs = require(logsPath);
 
 // @route POST API/logInsertVal/logInsert
 // @desc inserts id info logged on check in into db
@@ -36,37 +35,24 @@ router.post("/logInsert", async (req, res) => {
   const license_id = req.body.license_id;
   const total_time = req.body.total_time;
 
-  // make a connection
-  await mongoose.connect(process.env.MONGODB_URL, {
-    useCreateIndex: true,
-    useNewUrlParser: true,
-    useFindAndModify: false,
-    useUnifiedTopology: true
-  }).then(() => console.log("MongoDB successfully connected in route"))
 
-
-  // get reference to database
-  const db = mongoose.connection;
-
-  db.on('error', console.error.bind(console, 'connection error:'));
-  db.once('open', function () {
-    try {
-      // a document instance
-      let newLogEntry = new Logs({ first_name, last_name, check_in, license_id, total_time });
-
-      // save model to database
-      newLogEntry.save(function (err) {
-        if (err) return console.error(err);
-        res.send({ correct: true })
-      });
-
-    } catch (err) {
-      res.send({
-        error: `${err.message}`,
-        status: `${err.status}`
-      });
-    };
-  });
+  try {
+    // a document instance
+    let newLogEntry = new Logs({ first_name, last_name, check_in, license_id, total_time });
+    console.log(newLogEntry, 'try block loginsert - new entry')
+    // save model to database
+    await newLogEntry
+      .save()
+      .then(result => {
+        console.log(result.id, 'try block loginsert - save new entry ');  // this will be the new created ObjectId
+      })
+      .catch(err => res.send({ err }))
+  } catch (err) {
+    res.send({
+      error: `${err.message}`,
+      status: `${err.status}`
+    });
+  };
 });
 
 module.exports = router;
