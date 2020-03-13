@@ -3,19 +3,7 @@ const path = require('path');
 const router = express.Router();
 const mongoose = require('mongoose');
 
-// make a connection
-mongoose.connect(process.env.MONGODB_URL, {
-  useCreateIndex: true,
-  useNewUrlParser: true,
-  useFindAndModify: false,
-  useUnifiedTopology: true
-}).then(() => console.log("MongoDB successfully connected in route"))
 
-
-// get reference to database
-const db = mongoose.connection;
-
-db.on('error', console.error.bind(console, 'connection error:'));
 
 
 
@@ -47,6 +35,20 @@ router.post("/logInsert", async (req, res) => {
   const check_in = req.body.check_in;
   const license_id = req.body.license_id;
   const total_time = req.body.total_time;
+
+  // make a connection
+  await mongoose.connect(process.env.MONGODB_URL, {
+    useCreateIndex: true,
+    useNewUrlParser: true,
+    useFindAndModify: false,
+    useUnifiedTopology: true
+  }).then(() => console.log("MongoDB successfully connected in route"))
+
+
+  // get reference to database
+  const db = mongoose.connection;
+
+  db.on('error', console.error.bind(console, 'connection error:'));
   db.once('open', function () {
     try {
       // a document instance
