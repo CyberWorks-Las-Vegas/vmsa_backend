@@ -16,6 +16,7 @@ const app = express();
 // const bless = require('./routes/bless');
 
 // For validation routes
+// Posts
 const adminRegValPath = path.join(__dirname, 'routes', 'API', 'adminRegVal');
 const adminRegistrationvalidation = require(adminRegValPath);
 
@@ -30,6 +31,10 @@ const logInsertvalidation = require(logInsertValPath);
 
 const logInsertOutValPath = path.join(__dirname, 'routes', 'API', 'logInsertOutVal');
 const logInsertOutvalidation = require(logInsertOutValPath);
+
+// Gets
+const logRetrieveValPath = path.join(__dirname, 'routes', 'API', 'Get', 'logRetrieveVal');
+const logRetrievevalidation = require(logRetrieveValPath);
 /*ROUTES END*/
 /*CORS START*/
 
@@ -152,6 +157,8 @@ app.use("/API/logInsertVal", logInsertvalidation);
 app.use("/API/logInsertOutVal", logInsertOutvalidation);
 app.use("/API/premisesLogVal", premisesLoginvalidation);
 app.use("/API/adminRegVal", adminRegistrationvalidation);
+
+app.use("/API/Get/logRetrieveVal", logRetrievevalidation);
 
 /*ROUTES END*/
 /*EXTRA OPTIONS START*/

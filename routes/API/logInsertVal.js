@@ -34,7 +34,7 @@ router.post("/logInsert", async (req, res) => {
   const check_in = req.body.check_in;
   const check_out = '';
   const license_id = req.body.license_id;
-  const total_time = req.body.total_time;
+  const total_time = '';
 
   try {
     // a document instance

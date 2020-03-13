@@ -4,8 +4,8 @@ const router = express.Router();
 
 // Load input validation
 const dirname = '/app'
-const validateLogInsertPath = path.join(dirname, 'validation', 'logs', 'logsInsert');
-const validateLogInsert = require(validateLogInsertPath);
+const validateLogInsertOutPath = path.join(dirname, 'validation', 'logs', 'logsInsertOut');
+const validateLogInsertOut = require(validateLogInsertOutPath);
 
 // Load Premises model
 const logsPath = path.join(dirname, 'models', 'Logs');
@@ -17,7 +17,7 @@ const Logs = require(logsPath);
 router.post("/logInsertOut", async (req, res) => {
 
   // Form validation
-  const { errors, isValid } = validateLogInsert(req.body);
+  const { errors, isValid } = validateLogInsertOut(req.body);
 
   // Check validation 
   if (!isValid) {
@@ -25,9 +25,10 @@ router.post("/logInsertOut", async (req, res) => {
   }
 
   // get check_out from request body
-
   const check_out = req.body.check_out;
   const license_id = req.body.license_id;
+
+  // TODO: add in functionality to calulate total time checked in
 
   try {
     // find collection and update with check out info
