@@ -39,14 +39,14 @@ router.post("/logInsert", async (req, res) => {
   try {
     // a document instance
     let newLogEntry = new Logs({ first_name, last_name, check_in, license_id, total_time });
-    console.log(newLogEntry, 'try block loginsert - new entry')
+
     // save model to database
     await newLogEntry
       .save()
       .then(result => {
-        console.log(result.id, 'try block loginsert - save new entry ');  // this will be the new created ObjectId
+        res.send({ updated: true })
       })
-      .catch(err => res.send({ err }))
+      .catch(err => res.send({ err, updated: false }))
   } catch (err) {
     res.send({
       error: `${err.message}`,
