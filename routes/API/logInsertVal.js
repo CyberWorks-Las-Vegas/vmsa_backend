@@ -47,10 +47,10 @@ router.post("/logInsert", async (req, res) => {
       let newLogEntry = new Logs({ first_name, last_name, check_in, license_id, total_time });
 
       // save model to database
-      await newLogEntry.save(function (err) {
+      newLogEntry.save(function (err) {
         if (err) return console.error(err);
-      }).then(res => res.send({ correct: true }))
-        .catch(err => res.send({ err }))
+        res.send({ correct: true })
+      });
 
     } catch (err) {
       res.send({
