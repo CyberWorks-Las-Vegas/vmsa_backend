@@ -27,6 +27,9 @@ const appLoginvalidation = require(appLogValPath);
 
 const logInsertValPath = path.join(__dirname, 'routes', 'API', 'logInsertVal');
 const logInsertvalidation = require(logInsertValPath);
+
+const logInsertOutValPath = path.join(__dirname, 'routes', 'API', 'logInsertOutVal');
+const logInsertOutvalidation = require(logInsertOutValPath);
 /*ROUTES END*/
 /*CORS START*/
 
@@ -143,9 +146,10 @@ app.get('/', function (req, res, next) {
 // Defines a single route for test Restful API
 //app.use('/bless', bless);
 
-// Validation routes
+// Validation routes 
 app.use("/API/appLogVal", appLoginvalidation);
 app.use("/API/logInsertVal", logInsertvalidation);
+app.use("/API/logInsertOutVal", logInsertOutvalidation);
 app.use("/API/premisesLogVal", premisesLoginvalidation);
 app.use("/API/adminRegVal", adminRegistrationvalidation);
 
