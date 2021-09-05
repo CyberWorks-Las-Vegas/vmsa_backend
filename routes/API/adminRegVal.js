@@ -1,14 +1,14 @@
 const express = require("express");
-const path = require('path');
+const path = require("path");
 const router = express.Router();
 
 // Load input validation
-const dirname = '/app'
-const validateRegisterInputPath = path.join(dirname, 'validation', 'adminReg', 'adminRegistration');
+const dirname = "/app";
+const validateRegisterInputPath = "../../validation/adminReg/adminRegistration";
 const validateRegisterInput = require(validateRegisterInputPath);
 
 // Load AdminProfile model
-const AdminProfilePath = path.join(dirname, 'models', 'AdminProfile');
+const AdminProfilePath = "../../models/AdminProfile";
 const AdminProfile = require(AdminProfilePath);
 
 // @route POST /api/adminRegVal/register
@@ -26,10 +26,12 @@ router.post("/register", async (req, res) => {
 
   try {
     await AdminProfile.findOne({ premises_id: id })
-      .then(async user => {
+      .then(async (user) => {
         // Check if user exists and handle err
         const length = user.length;
-        if (length === 0) { throw new Error('premises id doesnt exist') };
+        if (length === 0) {
+          throw new Error("premises id doesnt exist");
+        }
         // destructure Id from object in array
         const { premises_id } = user;
 
@@ -40,8 +42,8 @@ router.post("/register", async (req, res) => {
             last_Name: req.body.last_Name,
             email: req.body.email,
             admin_Password: req.body.admin_Password,
-            front_Desk_Password: req.body.front_Desk_Password
-          }
+            front_Desk_Password: req.body.front_Desk_Password,
+          };
 
           const newSchool = {
             school_Name: req.body.school_Name,
@@ -50,7 +52,7 @@ router.post("/register", async (req, res) => {
             city: req.body.city,
             state: req.body.state,
             zip: req.body.zip,
-          }
+          };
 
           // send admin detail to db
           const found = await AdminProfile.findOneAndUpdate(
@@ -58,27 +60,30 @@ router.post("/register", async (req, res) => {
             {
               first_login: false,
               administrator: newUser,
-              school: newSchool
+              school: newSchool,
             },
             {
               new: true,
-              useFindAndModify: false
+              useFindAndModify: false,
             }
           );
 
           // check if admin info added to db and send res
           if (found) {
-            res.json({ correct: true })
+            res.json({ correct: true });
           } else {
-            res.json({ correct: false, message: 'Admin profile not added, please try again' })
+            res.json({
+              correct: false,
+              message: "Admin profile not added, please try again",
+            });
           }
         } else {
           res.json({
-            message: 'premises id not found',
+            message: "premises id not found",
             correct: false,
-            status: 401
+            status: 401,
           });
-        };
+        }
 
         // // Hash password before saving in database
         // bcrypt.genSalt(10, (err, salt) => {
@@ -91,17 +96,20 @@ router.post("/register", async (req, res) => {
         //       .catch(err => console.log(err));
         //   });
         // });
-      }).catch(err => res.json({
-        name: `${err.name}`,
-        msg: `${err.message}`,
-        status: `${err.status}`
-      }));
+      })
+      .catch((err) =>
+        res.json({
+          name: `${err.name}`,
+          msg: `${err.message}`,
+          status: `${err.status}`,
+        })
+      );
   } catch (err) {
     res.send({
       error: `${err.message}`,
-      status: `${err.status}`
+      status: `${err.status}`,
     });
-  };
-})
+  }
+});
 
 module.exports = router;

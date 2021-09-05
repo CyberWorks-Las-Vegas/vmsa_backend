@@ -1,5 +1,5 @@
 const express = require("express");
-const path = require('path');
+const path = require("path");
 const router = express.Router();
 
 // load tokens from config
@@ -7,15 +7,15 @@ const {
   createAccessToken,
   createRefreshToken,
   sendAccessToken,
-  sendRefreshToken
+  sendRefreshToken,
 } = require("../../config/token");
 // Load input validation
-const dirname = '/app'
-const validateAppLoginInputPath = path.join(dirname, 'validation', 'appLog', 'appLogin');
+const dirname = "/app";
+const validateAppLoginInputPath = "../../validation/appLog/appLogin";
 const validateAppLoginInput = require(validateAppLoginInputPath);
 
 // Load Premises model
-const appLoginPath = path.join(dirname, 'models', 'appLogin');
+const appLoginPath = "../../models/appLogin";
 const appLogin = require(appLoginPath);
 
 // @route POST API/appLogVal/appLogin
@@ -23,7 +23,7 @@ const appLogin = require(appLoginPath);
 // @access Private
 router.post("/appLogin", async (req, res) => {
   // check if for visitor station profile since it doesnt get validate put does get an acces token
-  if (req.body.current_profile !== 'visitor_station') {
+  if (req.body.current_profile !== "visitor_station") {
     // Form validation
     const { errors, isValid } = validateAppLoginInput(req.body);
 
@@ -39,21 +39,22 @@ router.post("/appLogin", async (req, res) => {
 
   try {
     // Find user by premises
-    await appLogin.find({ premises_id: id })
-      .then(async user => {
+    await appLogin
+      .find({ premises_id: id })
+      .then(async (user) => {
         // Check if user exists and handle err
         const length = user.length;
         if (length === 0) {
-          throw new Error('premises id doesnt exist')
-        };
+          throw new Error("premises id doesnt exist");
+        }
 
         // destructure Id from object in array
-        const userIdArray = user.map(prop => prop.premises_id);
+        const userIdArray = user.map((prop) => prop.premises_id);
         const [premises_id] = userIdArray;
-        if (profile !== 'visitor_station') {
+        if (profile !== "visitor_station") {
           // destructure password from object in array
-          let appPassword = `${profile}_password`
-          const userPasswordArray = user.map(prop => prop[appPassword]);
+          let appPassword = `${profile}_password`;
+          const userPasswordArray = user.map((prop) => prop[appPassword]);
           const [profilePassword] = userPasswordArray;
 
           // check passsword from db then create token if true
@@ -61,7 +62,7 @@ router.post("/appLogin", async (req, res) => {
             // create access/refresh tokens
             const accessToken = createAccessToken(premises_id);
             const refreshToken = createRefreshToken(premises_id);
-            const profileTokenName = `${profile}_token`
+            const profileTokenName = `${profile}_token`;
             // send refresh token to db
             await appLogin.findOneAndUpdate(
               {
@@ -70,19 +71,19 @@ router.post("/appLogin", async (req, res) => {
               { [`${profileTokenName}`]: `${refreshToken}` },
               {
                 new: true,
-                useFindAndModify: false
+                useFindAndModify: false,
               }
             );
             // send refresh token as cookie to client
-            sendRefreshToken(res, refreshToken)
+            sendRefreshToken(res, refreshToken);
             // send access token as a response from server
-            sendAccessToken(req, res, accessToken)
+            sendAccessToken(req, res, accessToken);
           }
-        } else if (premises_id === id && profile === 'visitor_station') {
+        } else if (premises_id === id && profile === "visitor_station") {
           // create access/refresh tokens
           const accessToken = createAccessToken(premises_id);
           const refreshToken = createRefreshToken(premises_id);
-          const profileTokenName = `${profile}_token`
+          const profileTokenName = `${profile}_token`;
           // send refresh token to db
           await appLogin.findOneAndUpdate(
             {
@@ -91,33 +92,34 @@ router.post("/appLogin", async (req, res) => {
             { [`${profileTokenName}`]: `${refreshToken}` },
             {
               new: true,
-              useFindAndModify: false
+              useFindAndModify: false,
             }
           );
           // send refresh token as cookie to client
-          sendRefreshToken(res, refreshToken)
+          sendRefreshToken(res, refreshToken);
           // send access token as a response from server
-          sendAccessToken(req, res, accessToken)
+          sendAccessToken(req, res, accessToken);
         } else {
           res.json({
-            message: 'Incorrect credentials',
+            message: "Incorrect credentials",
             correct: false,
-            status: 401
+            status: 401,
           });
-        };
-
-      }).catch(err => res.json({
-        name: `${err.name}`,
-        msg: `${err.message}`,
-        status: `${err.status}`
-      }));
+        }
+      })
+      .catch((err) =>
+        res.json({
+          name: `${err.name}`,
+          msg: `${err.message}`,
+          status: `${err.status}`,
+        })
+      );
   } catch (err) {
     res.send({
       error: `${err.message}`,
-      status: `${err.status}`
+      status: `${err.status}`,
     });
-  };
-
+  }
 });
 
 module.exports = router;
